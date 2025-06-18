@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
+
+    <PackageId>DotnetAi.Sdk</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Horia Apostol</Authors>
+    <Description>Unified and extensible .NET SDK for interacting with AI providers like OpenAI, Claude and DeepSeek.</Description>
+    <PackageTags>AI;LLM;OpenAI;Claude;DeepSeek;ChatGPT;Dotnet;SDK</PackageTags>
+    <RepositoryUrl>https://github.com/horia-apostol/dotnet-ai</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/horia-apostol/dotnet-ai/tree/main/dotnet-ai-sdk</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+</Project>
