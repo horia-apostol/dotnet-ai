@@ -6,8 +6,6 @@
 
 > Unified and extensible .NET SDK for interacting with LLMs like OpenAI, Claude (Anthropic), and DeepSeek – using a single interface.
 
----
-
 ## NuGet
 
 Install via .NET CLI:
@@ -15,3 +13,33 @@ Install via .NET CLI:
 ```bash
 dotnet add package DotnetAi.Sdk
 ```
+
+## Quick Start
+
+```csharp
+using DotentAi.Sdk;
+using DotentAi.Sdk.Models;
+
+var client = new AiClient("openai", "sk-your-api-key");
+
+var request = new ChatRequest
+{
+    Provider = "openai",
+    Model = "gpt-3.5-turbo",
+    Messages = new()
+    {
+        new() { Role = "user", Content = "What's the capital of France?" }
+    }
+};
+
+var response = await client.SendAsync(request);
+Console.WriteLine(response);
+```
+
+## Configuration
+
+| Provider     | ID         | Default Model            | Temperature Range |
+|--------------|------------|--------------------------|-------------------|
+| **OpenAI**   | `openai`   | `gpt-3.5-turbo`          | `0.0 - 2.0`       |
+| **Claude**   | `claude`   | `claude-3-opus-20240229` | `0.0 - 1.0`       |
+| **DeepSeek** | `deepseek` | `deepseek-chat`          | `0.0 - 1.5`       |
