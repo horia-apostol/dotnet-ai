@@ -26,10 +26,10 @@ var request = new ChatRequest
 {
     Provider = "openai",
     Model = "gpt-3.5-turbo",
-    Messages = new()
-    {
+    Messages =
+    [
         new() { Role = "user", Content = "What's the capital of France?" }
-    }
+    ]
 };
 
 var response = await client.SendAsync(request);
@@ -38,8 +38,41 @@ Console.WriteLine(response);
 
 ## Configuration
 
-| Provider     | ID         | Default Model            | Temperature Range |
+| Provider     | ID         | Base Model               | Temperature Range |
 |--------------|------------|--------------------------|-------------------|
 | **OpenAI**   | `openai`   | `gpt-3.5-turbo`          | `0.0 - 2.0`       |
 | **Claude**   | `claude`   | `claude-3-opus-20240229` | `0.0 - 1.0`       |
 | **DeepSeek** | `deepseek` | `deepseek-chat`          | `0.0 - 1.5`       |
+
+- All Anthropic models: https://docs.anthropic.com/en/docs/about-claude/models/overview
+- All Deepseek models: https://api-docs.deepseek.com/quick_start/pricing
+- All OpenAi models: https://platform.openai.com/docs/models
+
+## Advanced Usage
+
+With history
+
+```csharp
+var messages = new List<ChatMessage>
+{
+    new() { Role = "user", Content = "What is 5 + 3?" },
+    new() { Role = "assistant", Content = "5 + 3 = 8" },
+    new() { Role = "user", Content = "Add 10" }
+};
+
+var response = await client.SendAsync(new ChatRequest
+{
+    Provider = "openai",
+    Model = "gpt-3.5-turbo",
+    Messages = messages
+});
+```
+Using custom `HttpClient`
+
+```csharp
+var http = new HttpClient();
+var client = new AiClient("openai", "your-api-key", http);
+```
+
+
+
