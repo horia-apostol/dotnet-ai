@@ -33,7 +33,7 @@ string response = await client.SendAsync(request);
 Console.WriteLine(response);
 ```
 
-## [ChatRequest](https://github.com/horia-apostol/dotnet-ai/blob/main/dotnet-ai-sdk/DotnetAi.Sdk/Models/ChatRequest.cs) Parameters
+## [ChatRequest](https://github.com/horia-apostol/dotnet-ai/blob/main/dotnet-ai-sdk/src/DotnetAi.Sdk/Models/ChatRequest.cs) Parameters
 
 The `ChatRequest` object defines how a chat interaction is structured. It supports both simple prompts and multi-turn messages.
 
@@ -64,7 +64,7 @@ The `temperature` parameter controls how random or creative the AI's response wi
 
 ## Advanced Usage
 
-### With [ChatMessage](https://github.com/horia-apostol/dotnet-ai/blob/main/dotnet-ai-sdk/DotnetAi.Sdk/Models/ChatMessage.cs) history
+### With [ChatMessage](https://github.com/horia-apostol/dotnet-ai/blob/main/dotnet-ai-sdk/src/DotnetAi.Sdk/Models/ChatMessage.cs) history
 
 The `ChatMessage` object defines each message within a conversation.
 
