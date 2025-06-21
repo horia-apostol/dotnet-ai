@@ -6,11 +6,6 @@
 public class ChatRequest
 {
     /// <summary>
-    /// Gets or sets the name of the chat provider.
-    /// </summary>
-    public required string Provider { get; set; }
-
-    /// <summary>
     /// Gets or sets the prompt for the chat request.
     /// </summary>
     public string? Prompt { get; set; }
