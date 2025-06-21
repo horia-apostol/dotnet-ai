@@ -117,6 +117,78 @@ string response = await client.SendAsync(request);
 Console.WriteLine(response); // Output: C
 ```
 
+### Provider & Model Switching
+
+The SDK is designed to make it easy to switch between providers and models, ensuring high availability in production environments. You can define a request chain where, if a request fails or the initial model doesn't return a satisfactory response, the application will automatically try another provider or a more advanced model. This is also useful, for example, when starting with a cheaper model and escalating to a more capable one only when needed.
+
+```csharp
+using DotnetAi.Sdk;
+using DotnetAi.Sdk.Models;
+
+var claudeClient = new AiClient("claude", "anthropic-key");
+var deepSeekClient = new AiClient("deepseek", "deepseek-key");
+
+List <ChatMessage> messages =
+[
+    new() { Role = "user", Content = "What is latin for Ant? (A) Apoidea, (B) Rhopalocera, (C) Formicidae" },
+    new() { Role = "assistant", Content = "The answer is (" },
+];
+
+const int MaxTokens = 1;
+
+ChatRequest deepseekRequest = new()
+{
+    Model = "deepseek-reasoner",
+    Messages = messages,
+    MaxTokens = MaxTokens,
+};
+
+ChatRequest claudeBadRequest = new()
+{
+    Model = "claude-3-sonnet-20240229",
+    Messages = messages,
+    MaxTokens = MaxTokens,
+};
+ChatRequest claudeRequest = new()
+{
+    Model = "claude-opus-4-20250514",
+    Messages = messages,
+    MaxTokens = MaxTokens,
+};
+
+string? responseContent = null;
+
+List<Func<Task<string>>> requestChain =
+[
+    () => deepSeekClient.SendAsync(deepseekRequest),
+    () => claudeClient.SendAsync(claudeBadRequest),
+    () => claudeClient.SendAsync(claudeRequest)
+];
+
+foreach (var request in requestChain)
+{
+    try
+    {
+        responseContent = await request();
+        if (responseContent != null)
+            break;
+    }
+    catch
+    {
+
+    }
+}
+
+if (responseContent != null)
+{
+    Console.WriteLine(responseContent);
+}
+else
+{
+    Console.WriteLine("All attempts failed. No response available.");
+}
+```
+
 #### Using custom `HttpClient`
 
 ```csharp
