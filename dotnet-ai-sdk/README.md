@@ -24,7 +24,6 @@ AiClient client = new("openai", "sk-your-api-key");
 
 ChatRequest request = new()
 {
-    Provider = "openai",
     Model = "gpt-4.1",
     Prompt = "What is the capital of Romania?"
 };
@@ -39,7 +38,6 @@ The `ChatRequest` object defines how a chat interaction is structured. It suppor
 
 | Property      | Type                        | Required | Description                                              |
 | ------------- | --------------------------- | -------- | -------------------------------------------------------- |
-| `Provider`    | `string`                    | Yes      | One of `openai`, `claude`, `deepseek`                    |
 | `Prompt`      | `string?`                   | Optional | Quick prompt (if not using messages)                     |
 | `Messages`    | `List<ChatMessage>`         | Optional | Structured conversation messages                         |
 | `Model`       | `string?`                   | Optional | Specific model name (`gpt-4`, `claude-3-opus`, etc.)     |
@@ -84,7 +82,6 @@ List<ChatMessage> messages =
 
 string response = await client.SendAsync(new ChatRequest
 {
-    Provider = "openai",
     Model = "gpt-4.1",
     Messages = messages,
     Temperature = 0.0f,
@@ -111,7 +108,6 @@ List<ChatMessage> messages =
 
 ChatRequest request = new()
 {
-    Provider = "openai",
     Model = "gpt-4",
     Messages = messages,
     MaxTokens = 1,
