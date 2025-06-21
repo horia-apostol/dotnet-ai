@@ -125,8 +125,8 @@ The SDK is designed to make it easy to switch between providers and models, ensu
 using DotnetAi.Sdk;
 using DotnetAi.Sdk.Models;
 
-var claudeClient = new AiClient("claude", "anthropic-key");
-var deepSeekClient = new AiClient("deepseek", "deepseek-key");
+AiClient claudeClient = new("claude", "anthropic-key");
+AiClient deepSeekClient = new("deepseek", "deepseek-key");
 
 List <ChatMessage> messages =
 [
@@ -189,12 +189,81 @@ else
 }
 ```
 
-#### Using custom `HttpClient`
+### Custom LLM Client Integration
+
+The SDK allows easy integration with any custom LLM provider by extending the [AiClientBase](https://github.com/horia-apostol/dotnet-ai/blob/main/dotnet-ai-sdk/src/DotnetAi.Sdk/Abstract/AiClientBase.cs) class. This enables you to define your own request URLs, headers, and response parsing logic.
+
+```csharp
+public class CustomClient(HttpClient httpClient) : AiClientBase(httpClient)
+{
+    public override string ProviderName => "custom";
+
+    protected override string BuildUrl() => "https://api.customprovider.com/chat";
+
+    protected override void PrepareRequestHeaders(HttpRequestMessage request, string apiKey)
+    {
+        request.Headers.Authorization = new AuthenticationHeaderValue(Headers.BearerScheme, apiKey);
+    }
+
+    protected override string ExtractContent(JsonDocument doc)
+        => doc.RootElement
+              .GetProperty("content")
+              .GetString()
+           ?? "[Empty response]";
+}
+```
+
+Once registered, the custom client can be used like any other:
+
+```csharp
+using DotnetAi.Sdk;
+using DotnetAi.Sdk.Models;
+
+AiClient customClient = new("custom", "custom-key");
+
+ChatRequest customRequest = new()
+{
+    Model = "custom-model",
+    Prompt = "What's 2+2?"
+};
+
+var response = await customClient.SendAsync(customRequest);
+```
+
+This approach provides full flexibility to support proprietary or third-party LLMs with minimal effort.
+
+### Dependency Injection
+
+All clients in the SDK inherit from a shared base class `AiClientBase` and implement the `IAiClient` interface. This makes them easy to register and inject in ASP.NET Core.
+
+```csharp
+builder.Services.AddHttpClient<IAiClient, OpenAiClient>();
+builder.Services.AddHttpClient<IAiClient, ClaudeClient>();
+builder.Services.AddHttpClient<IAiClient, DeepseekClient>();
+builder.Services.AddHttpClient<IAiClient, CustomClient>();
+```
+In this case, you don't need the `AiClient` wrapper, you can call `SendAsync` directly on the injected instance.
+
+For a complete API example showcasing *Dependency Injection* integration and dynamic provider management, check out the [Core](https://github.com/horia-apostol/dotnet-ai/tree/main/dotnet-ai-core) project
+
+If you don’t use *Dependency Injection*, you can instantiate the `AiClient` class directly and pass a custom `HttpClient` if needed:
 
 ```csharp
 var http = new HttpClient();
 var client = new AiClient("openai", "your-api-key", http);
+
 ```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
