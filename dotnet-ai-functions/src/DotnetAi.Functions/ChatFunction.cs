@@ -25,7 +25,6 @@ public class ChatFunction
 
         var chatRequest = new ChatRequest
         {
-            Provider = ProviderNames.OpenAi,
             Model = AiModels.Gpt4,
             Prompt = body!.Prompt,
             Temperature = body.Temperature,
